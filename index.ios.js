@@ -52,7 +52,9 @@ class JodelStatsReactNative extends Component {
 class CountryView extends Component {
 
   constructor(props) {
+    console.log("in countryview")
     super(props);
+    console.log("in superprops")
     this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
@@ -61,12 +63,18 @@ class CountryView extends Component {
       loaded: false,
       refreshing: true
     };
+    console.log("in setstate")
     this.state.countryCode = 'DE';
+    console.log("in setCountryCode")
     console.log(this.state.countryCode)
   }
 
   componentDidMount() {
     this.fetchData();
+    this.setState({
+      loaded: true,
+      refreshing: false
+    });
   }
 
   networkRequestFailed() {
@@ -94,7 +102,7 @@ class CountryView extends Component {
   }
 
   renderLoadedView() {
-    console.log(this)
+    console.log("in renderLoadedView")
     return (
       <View style={{flex: 1}}>
         <SegmentedControlIOS
