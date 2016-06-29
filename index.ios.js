@@ -14,7 +14,9 @@ import {
   ListView,
   Dimensions,
   SegmentedControlIOS,
-  Navigator
+  Navigator,
+  RefreshControl,
+  Alert
 } from 'react-native';
 
 var REQUEST_URL = 'http://jodelstats.com';
@@ -56,7 +58,8 @@ class CountryView extends Component {
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
       selectedIndex: 0,
-      loaded: false
+      loaded: false,
+      refreshing: true
     };
     this.state.countryCode = 'DE';
     console.log(this.state.countryCode)
@@ -66,6 +69,14 @@ class CountryView extends Component {
     this.fetchData();
   }
 
+  networkRequestFailed() {
+    this.setState({
+      loaded: true,
+      refreshing: false
+    });
+    Alert.alert('Network Error', 'Could not load Jodel posts. Please check your connection.');
+  }
+
   fetchData() {
     console.log(REQUEST_URL + "/countries/" + this.state.countryCode + ".json")
     fetch(REQUEST_URL + "/countries/" + this.state.countryCode + ".json")
@@ -73,8 +84,12 @@ class CountryView extends Component {
       .then((json) => {
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(json),
-          loaded: true
+          loaded: true,
+          refreshing: false
         });
+      })
+      .catch((error) => {
+        this.networkRequestFailed();
       });
   }
 
@@ -83,6 +98,7 @@ class CountryView extends Component {
     return (
       <View style={{flex: 1}}>
         <SegmentedControlIOS
+          style={styles.countryControl}
           values={['DE', 'AT', 'CH', 'NL']}
           selectedIndex={this.state.selectedIndex}
           onChange={(event) => {
@@ -92,16 +108,27 @@ class CountryView extends Component {
           }}
           onValueChange={(value) => {
             this.state.countryCode = value;
+            this.state.refreshing = true;
             this.fetchData()
           }}
         />
         <ListView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          }
           dataSource={this.state.dataSource}
           renderRow={this.renderCityPreview}
           style={styles.listView}
         />
       </View>
     )
+  }
+
+  _onRefresh() {
+    this.fetchData();
   }
 
   render() {
@@ -148,6 +175,11 @@ messageStyle = function(jodelColor) {
 }
 
 const styles = StyleSheet.create({
+  countryControl: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10
+  },
   messageWrapper: {
     flexDirection: "row"
   },
