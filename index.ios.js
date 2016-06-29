@@ -11,12 +11,43 @@ import {
   Text,
   View,
   Image,
-  ListView
+  ListView,
+  Dimensions,
+  SegmentedControlIOS,
+  Navigator
 } from 'react-native';
 
-var REQUEST_URL = 'http://jodelstats.com/countries/DE.json';
+var REQUEST_URL = 'http://jodelstats.com';
 
 class JodelStatsReactNative extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  renderScene(route, navigator) {
+         return (
+         <View style={styles.container}>
+            <CountryView
+              navigator={navigator}
+            />
+      </View>)
+  }
+
+  render() {
+    return (
+        <Navigator
+          style={{ flex:1 }}
+          initialRoute={{ name: "countries" }}
+          renderScene={ this.renderScene }
+          parentClass={this}
+        />
+    )
+  }
+
+}
+
+class CountryView extends Component {
 
   constructor(props) {
     super(props);
@@ -24,8 +55,11 @@ class JodelStatsReactNative extends Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
+      selectedIndex: 0,
       loaded: false
     };
+    this.state.countryCode = 'DE';
+    console.log(this.state.countryCode)
   }
 
   componentDidMount() {
@@ -33,7 +67,8 @@ class JodelStatsReactNative extends Component {
   }
 
   fetchData() {
-    fetch(REQUEST_URL)
+    console.log(REQUEST_URL + "/countries/" + this.state.countryCode + ".json")
+    fetch(REQUEST_URL + "/countries/" + this.state.countryCode + ".json")
       .then((response) => response.json())
       .then((json) => {
         this.setState({
@@ -43,15 +78,35 @@ class JodelStatsReactNative extends Component {
       });
   }
 
-  render() {
-    if (this.state.loaded) {
-      return (
+  renderLoadedView() {
+    console.log(this)
+    return (
+      <View style={{flex: 1}}>
+        <SegmentedControlIOS
+          values={['DE', 'AT', 'CH', 'NL']}
+          selectedIndex={this.state.selectedIndex}
+          onChange={(event) => {
+            this.setState({
+              selectedIndex: event.nativeEvent.selectedSegmentIndex,
+            });
+          }}
+          onValueChange={(value) => {
+            this.state.countryCode = value;
+            this.fetchData()
+          }}
+        />
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderCityPreview}
           style={styles.listView}
         />
-      )
+      </View>
+    )
+  }
+
+  render() {
+    if (this.state.loaded) {
+      return this.renderLoadedView();
     } else {
       return this.renderLoadingView();
     }
@@ -59,7 +114,7 @@ class JodelStatsReactNative extends Component {
 
   renderLoadingView() {
     return (
-      <View style={styles.container}>
+      <View style={styles.loadingContainer}>
         <Text>Loading...</Text>
       </View>
     );
@@ -67,52 +122,72 @@ class JodelStatsReactNative extends Component {
 
   renderCityPreview(city) {
     return (
-      <View style={jodelStyle("#" + city.first_jodel.color)}>
-        <View style={styles.rightContainer}>
-          <Text style={styles.title}>{city.name}</Text>
-          <Text style={styles.year}>{city.first_jodel.message}</Text>
+      <View>
+        <View style={styles.rowContainer}>
+          <Text style={styles.title}>{city.name + " voted " + city.highest_votes + " times:"}</Text>
+          <View style={styles.messageWrapper}>
+            <Text style={messageStyle("#" + city.first_jodel.color)}>{city.first_jodel.message}</Text>
+          </View>
         </View>
       </View>
     );
   }
 }
 
-jodelStyle = function(jodelColor) {
+messageStyle = function(jodelColor) {
   return {
-    backgroundColor: jodelColor,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    alignSelf: "stretch",
+    paddingLeft: 10,
+    paddingRight: 10,
+    textAlign: 'left',
+    color: '#FFFFFF',
+    backgroundColor: jodelColor
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  messageWrapper: {
+    flexDirection: "row"
+  },
+  loadingContainer: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  rightContainer: {
+  container: {
     flex: 1,
+    paddingTop: 20
+  },
+  rowContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: 10,
+    backgroundColor: '#F6F6F6',
   },
   title: {
+    flex: 1,
+    flexDirection: 'row',
+    alignSelf: 'stretch',
     fontSize: 20,
     marginBottom: 8,
-    textAlign: 'center'
+    textAlign: 'left'
   },
-  year: {
-    textAlign: 'center'
+  message: {
+    flex: 1,
+    textAlign: 'left',
+    color: '#FFFFFF',
   },
   thumbnail: {
     width: 50,
     height: 80
   },
   listView: {
-    paddingTop: 20
+    flex: 1,
   }
 });
 
