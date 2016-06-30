@@ -11,9 +11,13 @@ import {
   NavigatorIOS,
   RefreshControl,
   Alert,
-  TabBarIOS
+  TabBarIOS,
+  TouchableHighlight
 } from 'react-native';
-import styles from '../assets/styles'
+import styles from '../assets/styles';
+import dynamicStyles from '../assets/dynamicStyles';
+import constants from '../constants';
+import CityView from './CityView';
 
 class CountryView extends Component {
 
@@ -26,7 +30,8 @@ class CountryView extends Component {
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
       selectedIndex: 0,
-      refreshing: true
+      refreshing: true,
+      navigator: props.navigator
     };
     console.log("in setstate")
     this.state.countryCode = 'DE';
@@ -52,7 +57,7 @@ class CountryView extends Component {
   fetchData() {
     return new Promise(
       function(resolve, reject) {
-        fetch(this.props.REQUEST_URL + "/countries/" + this.state.countryCode + ".json")
+        fetch(constants.REQUEST_URL + "/countries/" + this.state.countryCode + ".json")
           .then((response) => response.json())
           .then((json) => {
             this.setState({
@@ -155,27 +160,26 @@ class CountryView extends Component {
   renderCityPreview(city) {
     return (
       <View>
-        <View style={styles.rowContainer}>
-          <Text style={styles.title}>{city.name + " voted " + city.highest_votes + " times:"}</Text>
-          <View style={styles.messageWrapper}>
-            <Text style={this.messageStyle("#" + city.first_jodel.color)}>{city.first_jodel.message}</Text>
+        <TouchableHighlight onPress={() => this._onPressButton(city.name)} underlayColor='black'>
+          <View style={styles.rowContainer}>
+            <Text style={styles.title}>{city.name + " voted " + city.highest_votes + " times:"}</Text>
+            <View style={styles.messageWrapper}>
+              <Text style={dynamicStyles.messageStyle("#" + city.first_jodel.color)}>{city.first_jodel.message}</Text>
+            </View>
           </View>
-        </View>
+        </TouchableHighlight>
       </View>
     );
   }
 
-  messageStyle(jodelColor) {
-    return {
-      flex: 1,
-      flexDirection: 'row',
-      alignSelf: "stretch",
-      paddingLeft: 10,
-      paddingRight: 10,
-      textAlign: 'left',
-      color: '#FFFFFF',
-      backgroundColor: jodelColor
-    }
+  _onPressButton(cityName) {
+    this.state.navigator.push({
+      component: CityView,
+      title: cityName,
+      passProps: {
+        cityName: cityName
+      }
+    })
   }
 }
 

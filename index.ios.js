@@ -45,7 +45,7 @@ class JodelStatsReactNative extends Component {
         style={{flex: 1}}
         initialRoute={{
           component: CountryView,
-          title: 'My View Title',
+          title: 'Jodel Stats',
           passProps: {
             REQUEST_URL: REQUEST_URL,
           },
