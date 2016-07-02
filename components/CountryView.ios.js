@@ -165,7 +165,9 @@ class CountryView extends Component {
           <View style={styles.rowContainer}>
             <Text style={styles.title}>{city.name + " voted " + city.highest_votes + " times:"}</Text>
             <View style={styles.messageWrapper}>
-              <Text style={dynamicStyles.messageStyle("#" + city.first_jodel.color)}>{city.first_jodel.message}</Text>
+            <View style={dynamicStyles.messageStyle("#" + city.first_jodel.color)}>
+              <Text style={styles.message}>{city.first_jodel.message}</Text>
+            </View>
             </View>
           </View>
         </TouchableHighlight>

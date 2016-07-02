@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     color: '#FFFFFF',
+    marginLeft: 7,
+    marginRight: 7,
+    fontSize: 15
   },
   thumbnail: {
     width: 50,

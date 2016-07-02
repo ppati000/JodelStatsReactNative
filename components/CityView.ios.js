@@ -100,7 +100,9 @@ class CityView extends Component {
         <View style={styles.rowContainer}>
           <Text style={styles.title}>{"Voted " + jodel.vote_count + " times:"}</Text>
           <View style={styles.messageWrapper}>
-            <Text style={dynamicStyles.messageStyle("#" + jodel.color)}>{jodel.message}</Text>
+            <View style={dynamicStyles.messageStyle("#" + jodel.color)}>
+              <Text style={styles.message}>{jodel.message}</Text>
+            </View>
           </View>
         </View>
       </View>
