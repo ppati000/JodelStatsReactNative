@@ -213,7 +213,7 @@ var NavigationBarRouteMapper = {
     return (
       <TouchableOpacity style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems:'center'}}>
         <Text style={{color: 'white', margin: 10, fontSize: 20, letterSpacing: -2, fontWeight: 'bold'}}>
-          Jodel Stats
+          JStats
         </Text>
       </TouchableOpacity>
     );
