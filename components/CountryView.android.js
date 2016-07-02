@@ -8,12 +8,14 @@ import {
   ListView,
   Dimensions,
   SegmentedControlIOS,
-  NavigatorIOS,
+  Navigator,
   RefreshControl,
   Alert,
-  TabBarIOS,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity
 } from 'react-native';
+import TabNavigator from 'react-native-tab-navigator';
+
 import styles from '../assets/styles';
 import dynamicStyles from '../assets/dynamicStyles';
 import constants from '../constants';
@@ -55,7 +57,6 @@ class CountryView extends Component {
   }
 
   fetchData() {
-    console.log(constants.REQUEST_URL + "/cities/" + this.state.countryCode + ".json")
     return new Promise(
       function(resolve, reject) {
         fetch(constants.REQUEST_URL + "/countries/" + this.state.countryCode + ".json")
@@ -75,8 +76,8 @@ class CountryView extends Component {
   renderLoadedView() {
     console.log("in renderLoadedView")
     return (
-        <TabBarIOS>
-        <TabBarIOS.Item
+        <TabNavigator>
+        <TabNavigator.Item
           title="Germany"
           selected={this.state.countryCode === 'DE'}
           onPress={() => {
@@ -88,8 +89,8 @@ class CountryView extends Component {
             });
           }}>
           {this._renderContent()}
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
+        </TabNavigator.Item>
+        <TabNavigator.Item
           title="Austria"
           selected={this.state.countryCode === 'AT'}
           onPress={() => {
@@ -101,8 +102,8 @@ class CountryView extends Component {
             });
           }}>
           {this._renderContent()}
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
+        </TabNavigator.Item>
+        <TabNavigator.Item
           title="Switzerland"
           selected={this.state.countryCode === 'CH'}
           onPress={() => {
@@ -114,8 +115,8 @@ class CountryView extends Component {
             });
           }}>
           {this._renderContent()}
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
+        </TabNavigator.Item>
+        <TabNavigator.Item
           title="Netherlands"
           selected={this.state.countryCode === 'NL'}
           onPress={() => {
@@ -127,8 +128,8 @@ class CountryView extends Component {
             });
           }}>
           {this._renderContent()}
-        </TabBarIOS.Item>
-      </TabBarIOS>
+        </TabNavigator.Item>
+      </TabNavigator>
     )
   }
 
@@ -145,7 +146,7 @@ class CountryView extends Component {
         }
         dataSource={this.state.dataSource}
         renderRow={this.renderCityPreview.bind(this)}
-        style={styles.listView}
+        style={styles.android_listView}
       />
      </View>);
   }
@@ -155,7 +156,16 @@ class CountryView extends Component {
   }
 
   render() {
-    return this.renderLoadedView();
+    return (
+      <Navigator
+          renderScene={this.renderLoadedView.bind(this)}
+          navigator={this.props.navigator}
+          navigationBar={
+            <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
+                routeMapper={NavigationBarRouteMapper}
+            />
+          } />
+    );
   }
 
   renderCityPreview(city) {
@@ -174,14 +184,38 @@ class CountryView extends Component {
   }
 
   _onPressButton(cityName) {
-    this.state.navigator.push({
-      component: CityView,
-      title: cityName,
-      passProps: {
-        cityName: cityName
-      }
+    this.props.navigator.push({
+      id: 'CityView',
+      name: cityName,
     })
   }
 }
+
+
+
+var NavigationBarRouteMapper = {
+  LeftButton(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
+          onPress={() => {Alert.alert("About", constants.aboutText);}}>
+        <Text style={{color: 'white', margin: 10,}}>
+          About
+        </Text>
+      </TouchableOpacity>
+    );
+  },
+  RightButton(route, navigator, index, navState) {
+    return null;
+  },
+  Title(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems:'center'}}>
+        <Text style={{color: 'white', margin: 10, fontSize: 20, letterSpacing: -2, fontWeight: 'bold'}}>
+          Jodel Stats
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+};
 
 module.exports = CountryView;

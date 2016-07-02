@@ -46,6 +46,10 @@ const styles = StyleSheet.create({
   },
   listView: {
     flex: 1,
+  },
+  android_listView: {
+    flex: 1,
+    marginTop: 50
   }
 });
 

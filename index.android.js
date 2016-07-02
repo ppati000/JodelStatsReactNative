@@ -9,44 +9,46 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Image,
+  ListView,
+  Dimensions,
+  SegmentedControlIOS,
+  Navigator,
+  RefreshControl,
+  Alert,
+  TouchableOpacity
 } from 'react-native';
+import CountryView from './components/CountryView';
+import CityView from './components/CityView'
+
+const styles = require('./assets/styles.js')
+var REQUEST_URL = 'http://jodelstats.com';
 
 class JodelStatsReactNative extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
+      <Navigator
+          initialRoute={{id: 'CountryView', name: 'Index'}}
+          renderScene={this._renderScene.bind(this)}
+      />
+    )
   }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+  _renderScene(route, navigator) {
+    if (route.id === 'CountryView') {
+      return (<CountryView navigator={navigator}/>);
+    }
+    if (route.id === 'CityView') {
+      return(<CityView cityName={route.name} navigator={navigator} />);
+    }
+  }
+
+}
 
 AppRegistry.registerComponent('JodelStatsReactNative', () => JodelStatsReactNative);
