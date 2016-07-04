@@ -8,7 +8,8 @@ Just like [jodelstats.com](http://jodelstats.com), but right on your homescreen!
 ## How do I install it?
 **iOS Users:**
 
-You need a Mac with a recent version of XCode and a free Apple Developer account.
+*You need a Mac with a recent version of XCode and a free Apple Developer account for the following steps to succeed.
+Moreover, you need to have React Native installed. For more info, see the [React Native docs](http://facebook.github.io/react-native/docs/getting-started.html).*
 
 1. [Download](https://github.com/ppati000/JodelStatsReactNative/archive/master.zip) this repository as a zip
 2. Unzip it
