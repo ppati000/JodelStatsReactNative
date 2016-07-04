@@ -1,5 +1,5 @@
 # JodelStatsReactNative
-A [Jodel Stats](http://jodelstats.com) client for iOS (Android probably coming soon) implemented using React Native.
+A [Jodel Stats](http://jodelstats.com) client for iOS/Android implemented using React Native.
 
 ## What is this?
 This is an app that lets you read the most popular posts on [Jodel](http://jodel-app.com) from everywhere in the world.
@@ -23,7 +23,7 @@ If you need any help, feel free to message me on [Twitter](http://twitter.com/pp
 
 **Android Users:**
 
-This app is currently not available for Android users. Android support might be coming soon.
+[Download the app on Google Play](https://play.google.com/store/apps/details?id=com.jodelstatsreactnative). :)
 
 ## How can I contribute?
 
