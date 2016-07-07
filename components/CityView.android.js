@@ -17,50 +17,31 @@ import {
 import styles from '../assets/styles';
 import dynamicStyles from '../assets/dynamicStyles';
 import constants from '../constants';
+import Commons from './Commons';
 
 class CityView extends Component {
 
   constructor(props) {
     super(props);
+    this.commons = new Commons(this);
     this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
-      refreshing: true
+      refreshing: false,
+      navigator: props.navigator,
+      cityName: props.cityName
     };
-    this.state.cityName = props.cityName;
   }
 
   componentDidMount() {
     this.setState({
       refreshing: true
-    }, function() {
-      this.fetchData();
-    });
-  }
-
-  networkRequestFailed() {
-    this.setState({
-      refreshing: false
-    });
-    Alert.alert('Network Error', 'Could not load Jodel posts. Please check your connection.');
+    }, () => this.fetchData())
   }
 
   fetchData() {
-    return new Promise(
-      function(resolve, reject) {
-        fetch(constants.REQUEST_URL + "/cities/" + this.state.cityName + ".json")
-          .then((response) => response.json())
-          .then((json) => {
-            this.setState({
-              dataSource: this.state.dataSource.cloneWithRows(json),
-              refreshing: false
-            });
-          })
-          .catch((error) => {
-            this.networkRequestFailed();
-          });
-      }.bind(this));
+    this.commons.fetchData(false); //act as visitor (Visitor Pattern)
   }
 
   renderLoadedView() {

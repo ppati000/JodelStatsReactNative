@@ -20,61 +20,35 @@ import styles from '../assets/styles';
 import dynamicStyles from '../assets/dynamicStyles';
 import constants from '../constants';
 import CityView from './CityView';
+import Commons from './Commons'
 
 class CountryView extends Component {
 
   constructor(props) {
-    console.log("in countryview")
     super(props);
-    console.log("in superprops")
+    this.commons = new Commons(this);
     this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
       selectedIndex: 0,
-      refreshing: true,
+      refreshing: false,
+      countryCode: 'DE',
       navigator: props.navigator
     };
-    console.log("in setstate")
-    this.state.countryCode = 'DE';
-    console.log("in setCountryCode")
-    console.log(this.state.countryCode)
   }
 
   componentDidMount() {
     this.setState({
       refreshing: true
-    }, function() {
-      this.fetchData();
-    });
-  }
-
-  networkRequestFailed() {
-    this.setState({
-      refreshing: false
-    });
-    Alert.alert('Network Error', 'Could not load Jodel posts. Please check your connection.');
+    }, () => this.fetchData())
   }
 
   fetchData() {
-    return new Promise(
-      function(resolve, reject) {
-        fetch(constants.REQUEST_URL + "/countries/" + this.state.countryCode + ".json")
-          .then((response) => response.json())
-          .then((json) => {
-            this.setState({
-              dataSource: this.state.dataSource.cloneWithRows(json),
-              refreshing: false
-            });
-          })
-          .catch((error) => {
-            this.networkRequestFailed();
-          });
-      }.bind(this));
+    this.commons.fetchData(true);
   }
 
   renderLoadedView() {
-    console.log("in renderLoadedView")
     return (
         <TabNavigator>
         <TabNavigator.Item
@@ -134,7 +108,6 @@ class CountryView extends Component {
   }
 
   _renderContent() {
-    console.log("In _renderContent")
     return (
     <View style={{flex: 1}}>
       <ListView
@@ -186,10 +159,15 @@ class CountryView extends Component {
   }
 
   _onPressButton(cityName) {
+    console.log("button pressed")
     this.props.navigator.push({
       id: 'CityView',
       name: cityName,
+      cityName: cityName
+    }, function() {
+      console.log("push finished");
     })
+    console.log("method end")
   }
 }
 
