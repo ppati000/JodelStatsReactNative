@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import {
+  Alert,
+  TouchableOpacity,
+  Text,
+  View
+} from 'react-native';
 
 import CountryView from './CountryView';
 import constants from '../constants';
@@ -38,6 +43,34 @@ class Commons {
         console.log(error)
         this.networkRequestFailed();
     }
+  }
+
+  navigationBarRouteMapper(cityName) {
+    var NavigationBarRouteMapper = {
+      LeftButton(route, navigator, index, navState) {
+        return (
+          <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
+              onPress={() => navigator.parentNavigator.pop()}>
+            <Text style={{color: 'white', margin: 10,}}>
+              Back
+            </Text>
+          </TouchableOpacity>
+        );
+      },
+      RightButton(route, navigator, index, navState) {
+        return null;
+      },
+      Title(route, navigator, index, navState) {
+        return (
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <Text style={{color: 'white', margin: 10, fontSize: 16, }}>
+              {cityName}
+            </Text>
+          </View>
+        );
+      }
+    };
+    return NavigationBarRouteMapper;
   }
 
 }

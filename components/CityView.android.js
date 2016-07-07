@@ -50,7 +50,7 @@ class CityView extends Component {
           navigator={this.props.navigator}
           navigationBar={
             <Navigator.NavigationBar style={{backgroundColor: '#246dd5', alignItems: 'center'}}
-                routeMapper={NavigationBarRouteMapper} />
+                routeMapper={this.commons.navigationBarRouteMapper(this.state.cityName)} />
           } />);
   }
 
@@ -95,30 +95,5 @@ class CityView extends Component {
     );
   }
 }
-
-var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => navigator.parentNavigator.pop()}>
-        <Text style={{color: 'white', margin: 10,}}>
-          Back
-        </Text>
-      </TouchableOpacity>
-    );
-  },
-  RightButton(route, navigator, index, navState) {
-    return null;
-  },
-  Title(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 16, }}>
-          City
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-};
 
 module.exports = CityView;
