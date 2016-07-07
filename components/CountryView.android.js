@@ -12,7 +12,8 @@ import {
   RefreshControl,
   Alert,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
+  BackAndroid
 } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 
@@ -36,6 +37,15 @@ class CountryView extends Component {
       countryCode: 'DE',
       navigator: props.navigator
     };
+
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      if (this.state.navigator.getCurrentRoutes().length === 1  ) {
+         return false;
+      }
+      this.state.navigator.pop();
+      return true;
+    });
+
   }
 
   componentDidMount() {
