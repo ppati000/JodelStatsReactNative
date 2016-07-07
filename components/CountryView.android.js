@@ -174,7 +174,7 @@ class CountryView extends Component {
 
 
 var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
+  RightButton(route, navigator, index, navState) {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
           onPress={() => {Alert.alert("About", constants.aboutText);}}>
@@ -184,16 +184,23 @@ var NavigationBarRouteMapper = {
       </TouchableOpacity>
     );
   },
-  RightButton(route, navigator, index, navState) {
-    return null;
+  LeftButton(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems:'center', marginLeft: 7}}>
+        <Image
+          source={require('../assets/ic_launcher.png')}
+          style={{width: 40, height: 40}}
+        />
+      </TouchableOpacity>
+    );
   },
   Title(route, navigator, index, navState) {
     return (
-      <TouchableOpacity style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems:'center'}}>
+      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems:'center'}}>
         <Text style={{color: 'white', margin: 10, fontSize: 20, letterSpacing: -2, fontWeight: 'bold'}}>
-          JStats
+          Jodel Stats
         </Text>
-      </TouchableOpacity>
+      </View>
     );
   }
 };
