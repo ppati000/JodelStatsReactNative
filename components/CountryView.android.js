@@ -28,6 +28,7 @@ class CountryView extends Component {
   constructor(props) {
     super(props);
     this.commons = new Commons(this);
+    this.counter = 0;
     this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
@@ -149,7 +150,7 @@ class CountryView extends Component {
           navigator={this.props.navigator}
           navigationBar={
             <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-                routeMapper={NavigationBarRouteMapper}
+                routeMapper={this.navigationBarRouteMapper()}
             />
           } />
     );
@@ -195,40 +196,56 @@ class CountryView extends Component {
     })
     console.log("method end")
   }
-}
 
-
-
-var NavigationBarRouteMapper = {
-  RightButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-          onPress={() => {Alert.alert("About", constants.aboutText);}}>
-        <Text style={{color: 'white', margin: 10,}}>
-          About
-        </Text>
-      </TouchableOpacity>
-    );
-  },
-  LeftButton(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems:'center', marginLeft: 7}}>
-        <Image
-          source={require('../assets/ic_launcher.png')}
-          style={{width: 40, height: 40}}
-        />
-      </TouchableOpacity>
-    );
-  },
-  Title(route, navigator, index, navState) {
-    return (
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems:'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 20, letterSpacing: -2, fontWeight: 'bold'}}>
-          Jodel Stats
-        </Text>
-      </View>
-    );
+  veryEasterEggSuchWowManyHidden() {
+    if (this.counter >= 9) {
+      this.props.navigator.push({
+        id: 'CityView',
+        name: "Mittelstenweiler",
+        navigator: this.props.navigator
+      });
+      this.counter = 0;
+    } else {
+      this.counter += 1;
+    }
   }
-};
+
+  navigationBarRouteMapper() {
+    var self = this;
+    var NavigationBarRouteMapper = {
+      RightButton(route, navigator, index, navState) {
+        return (
+          <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
+              onPress={() => {Alert.alert("About", constants.aboutText);}}>
+            <Text style={{color: 'white', margin: 10,}}>
+              About
+            </Text>
+          </TouchableOpacity>
+        );
+      },
+      LeftButton(route, navigator, index, navState) {
+        return (
+          <TouchableOpacity style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems:'center', marginLeft: 7}}
+              onPress={() => {self.veryEasterEggSuchWowManyHidden()}}>
+            <Image
+              source={require('../assets/ic_launcher.png')}
+              style={{width: 40, height: 40}}
+            />
+          </TouchableOpacity>
+        );
+      },
+      Title(route, navigator, index, navState) {
+        return (
+          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems:'center'}}>
+            <Text style={{color: 'white', margin: 10, fontSize: 20, letterSpacing: -2, fontWeight: 'bold'}}>
+              Jodel Stats
+            </Text>
+          </View>
+        );
+      }
+    };
+    return NavigationBarRouteMapper;
+  }
+}
 
 module.exports = CountryView;
