@@ -20,7 +20,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 import CountryView from './components/CountryView';
-import CityView from './components/CityView'
+import CityView from './components/CityView';
+import JodelLightbox from './components/JodelLightbox';
 
 const styles = require('./assets/styles.js')
 var REQUEST_URL = 'http://jodelstats.com';
@@ -44,8 +45,11 @@ class JodelStatsReactNative extends Component {
     if (route.id === 'CountryView') {
       return (<CountryView navigator={navigator}/>);
     }
-    if (route.id === 'CityView') {
+    else if (route.id === 'CityView') {
       return(<CityView cityName={route.name} navigator={navigator} />);
+    }
+    else if (route.id === 'JodelLightbox') {
+      return(<JodelLightbox url={route.url} navigator={navigator} />);
     }
   }
 

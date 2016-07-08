@@ -81,15 +81,27 @@ class CityView extends Component {
     return this.renderLoadedView();
   }
 
+  _showLightbox(url) {
+    this.props.navigator.push({
+      id: 'JodelLightbox',
+      url: url,
+      navigtor: this.props.navigator
+    });
+  }
+
   renderJodel(jodel) {
     if (jodel.image_url !== null && jodel.image_url !== "null") {
-      jodelContent = (<Image
-                      source={{uri: "https:" + jodel.thumbnail_url}}
-                      style={{height: 100, flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                        <View style={{flex: 1, paddingTop: 40}}>
-                          <Text style={styles.imageText}>Hold to View</Text>
-                        </View>
-                      </Image>)
+      jodelContent = (
+        <TouchableOpacity onPress={() => this._showLightbox(jodel.image_url)} style={{flex: 1}}r>
+          <Image
+            source={{uri: "https:" + jodel.thumbnail_url}}
+            style={{height: 100, flex: 1}}>
+              <View style={styles.imageTextContainer}>
+                <Text style={styles.imageText}>Tap to View</Text>
+              </View>
+          </Image>
+        </TouchableOpacity>
+      )
     } else {
       jodelContent = <Text style={styles.message}>{jodel.message}</Text>
     }

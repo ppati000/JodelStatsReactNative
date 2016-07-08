@@ -56,9 +56,17 @@ const styles = StyleSheet.create({
   },
   imageText: {
     fontSize: 20,
+    height: 100,
     textAlign: 'center',
-    backgroundColor: 'rgba(0,0,0,0)',
-    color: 'white'
+    lineHeight: 100,
+    color: 'white',
+    textShadowColor: '#000000',
+    textShadowRadius: 100
+  },
+  imageTextContainer: {
+    paddingTop: 40,
+    flex: 1,
+    height: 100,
   }
 });
 

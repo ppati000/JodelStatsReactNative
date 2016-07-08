@@ -157,7 +157,13 @@ class CountryView extends Component {
 
   renderCityPreview(city) {
     if (city.first_jodel.image_url !== null && city.first_jodel.image_url !== "null") {
-      jodel = <Image source={{uri: "https:" + city.first_jodel.thumbnail_url}} style={{height: 100, flex: 1}} />
+      jodel =  (<Image
+                  source={{uri: "https:" + city.first_jodel.thumbnail_url}}
+                  style={{height: 100, flex: 1}}>
+                    <View style={styles.imageTextContainer}>
+                      <Text style={styles.imageText}>Tap to See More</Text>
+                    </View>
+                </Image>)
     } else {
       jodel = <Text style={styles.message}>{city.first_jodel.message}</Text>
     }
@@ -182,7 +188,8 @@ class CountryView extends Component {
     this.props.navigator.push({
       id: 'CityView',
       name: cityName,
-      cityName: cityName
+      cityName: cityName,
+      navigator: this.props.navigator
     }, function() {
       console.log("push finished");
     })
