@@ -156,6 +156,11 @@ class CountryView extends Component {
   }
 
   renderCityPreview(city) {
+    if (city.first_jodel.image_url !== null && city.first_jodel.image_url !== "null") {
+      jodel = <Image source={{uri: "https:" + city.first_jodel.thumbnail_url}} style={{height: 100, flex: 1}} />
+    } else {
+      jodel = <Text style={styles.message}>{city.first_jodel.message}</Text>
+    }
     return (
       <View>
         <TouchableHighlight onPress={() => this._onPressButton(city.name)} underlayColor='black'>
@@ -163,7 +168,7 @@ class CountryView extends Component {
             <Text style={styles.title}>{city.name + " voted " + city.highest_votes + " times:"}</Text>
             <View style={styles.messageWrapper}>
               <View style={dynamicStyles.messageStyle("#" + city.first_jodel.color)}>
-                <Text style={styles.message}>{city.first_jodel.message}</Text>
+                {jodel}
               </View>
             </View>
           </View>

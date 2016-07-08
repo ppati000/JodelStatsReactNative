@@ -81,13 +81,18 @@ class CityView extends Component {
   }
 
   renderJodel(jodel) {
+    if (jodel.image_url !== null && jodel.image_url !== "null") {
+      jodelContent = <Image source={{uri: "https:" + jodel.thumbnail_url}} style={{height: 100, flex: 1}} />
+    } else {
+      jodelContent = <Text style={styles.message}>{jodel.message}</Text>
+    }
     return (
       <View>
         <View style={styles.rowContainer}>
           <Text style={styles.title}>{"Voted " + jodel.vote_count + " times:"}</Text>
           <View style={styles.messageWrapper}>
             <View style={dynamicStyles.messageStyle("#" + jodel.color)}>
-              <Text style={styles.message}>{jodel.message}</Text>
+              {jodelContent}
             </View>
           </View>
         </View>
