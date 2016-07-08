@@ -64,6 +64,7 @@ class CountryView extends Component {
         <TabNavigator.Item
           title="Germany"
           selected={this.state.countryCode === 'DE'}
+          renderIcon={() => <Image source={require('../assets/de.png')} style={{width: 20, height: 20}} />}
           onPress={() => {
             this.setState({
               countryCode: 'DE',
@@ -77,6 +78,7 @@ class CountryView extends Component {
         <TabNavigator.Item
           title="Austria"
           selected={this.state.countryCode === 'AT'}
+          renderIcon={() => <Image source={require('../assets/at.png')} style={{width: 20, height: 20}} />}
           onPress={() => {
             this.setState({
               countryCode: 'AT',
@@ -90,6 +92,7 @@ class CountryView extends Component {
         <TabNavigator.Item
           title="Switzerland"
           selected={this.state.countryCode === 'CH'}
+          renderIcon={() => <Image source={require('../assets/ch.png')} style={{width: 20, height: 20}} />}
           onPress={() => {
             this.setState({
               countryCode: 'CH',
@@ -102,6 +105,7 @@ class CountryView extends Component {
         </TabNavigator.Item>
         <TabNavigator.Item
           title="Netherlands"
+          renderIcon={() => <Image source={require('../assets/nl.png')} style={{width: 20, height: 20}} />}
           selected={this.state.countryCode === 'NL'}
           onPress={() => {
             this.setState({
