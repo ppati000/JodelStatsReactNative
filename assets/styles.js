@@ -53,6 +53,12 @@ const styles = StyleSheet.create({
   android_listView: {
     flex: 1,
     marginTop: 50
+  },
+  imageText: {
+    fontSize: 20,
+    textAlign: 'center',
+    backgroundColor: 'rgba(0,0,0,0)',
+    color: 'white'
   }
 });
 

@@ -8,6 +8,7 @@
   "dependencies": {
     "react": "15.1.0",
     "react-native": "0.28.0",
+    "react-native-blur": "^1.0.0",
     "react-native-tab-navigator": "^0.3.2"
   },
   "devDependencies": {

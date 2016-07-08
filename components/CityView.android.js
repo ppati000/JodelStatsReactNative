@@ -18,6 +18,7 @@ import styles from '../assets/styles';
 import dynamicStyles from '../assets/dynamicStyles';
 import constants from '../constants';
 import Commons from './Commons';
+const { BlurView, VibrancyView } = require('react-native-blur');
 
 class CityView extends Component {
 
@@ -82,7 +83,13 @@ class CityView extends Component {
 
   renderJodel(jodel) {
     if (jodel.image_url !== null && jodel.image_url !== "null") {
-      jodelContent = <Image source={{uri: "https:" + jodel.thumbnail_url}} style={{height: 100, flex: 1}} />
+      jodelContent = (<Image
+                      source={{uri: "https:" + jodel.thumbnail_url}}
+                      style={{height: 100, flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={{flex: 1, paddingTop: 40}}>
+                          <Text style={styles.imageText}>Hold to View</Text>
+                        </View>
+                      </Image>)
     } else {
       jodelContent = <Text style={styles.message}>{jodel.message}</Text>
     }
